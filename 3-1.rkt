@@ -6,24 +6,15 @@
              [y (in-range start-y (+ start-y size-y))])
     (cons x y)))
 
-(define (parse line) ;; truly horrible...
-  (let*
-      ([inp (string-split line)]
-       [start-s (string-split (car (cdr (cdr inp))) ",")]
-       
-       [start-x (string->number (car start-s))]
-       [start-y (string->number (string-trim (car (cdr start-s)) ":"))]
-                                 
-       [size-s (string-split (car (cdr (cdr (cdr inp)))) "x")]
-       [size-x (string->number (car size-s))]
-       [size-y (string->number (car (cdr size-s)))])
-    (list start-x start-y size-x size-y)))
+(define/match (parse line)
+  [((pregexp #px"^.*? @ (\\d+),(\\d+): (\\d+)x(\\d+)" (cons _ spec)))
+     (map string->number spec)])
 
 (define (process file)
   (define seen (make-hash))
   (for* ([line (in-lines file)]
          [square (apply get-squares (parse line))])
-    (hash-update! seen square (lambda (x) (add1 x)) 0))
+    (hash-update! seen square add1 0))
   (for/sum ([x (in-list (hash->list seen))]
             #:unless (<= (cdr x) 1))
     1))
