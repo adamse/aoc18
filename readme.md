@@ -11,3 +11,10 @@ while :; do cat inp/1.txt; done | runhaskell 1-2.hs
 racket 2-1.rkt
 racket 2-2.rkt
 ```
+
+# 3 dec
+
+```
+racket 3-1.rkt
+racket 3-2.rkt
+```
