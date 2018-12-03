@@ -2,6 +2,7 @@
 
 (define twos 0)
 (define (add-two!) (set! twos (add1 twos)))
+
 (define threes 0)
 (define (add-three!) (set! threes (add1 threes)))
 
@@ -14,9 +15,9 @@
      (cond
        [(eq? 2 (length group)) (set! has-two #t)]
        [(eq? 3 (length group)) (set! has-three #t)]))
-   (group-by
-    (lambda (x) (char->integer x))
-    (string->list string)))
+   
+   (group-by char->integer
+             (string->list string)))
   
   (and has-two (add-two!))
   (and has-three (add-three!)))
@@ -25,8 +26,7 @@
   (for ([line (in-lines in)])
     (count line)))
 
-(call-with-input-file* "inp/2.txt"
-  (lambda (file) (process file)))
+(call-with-input-file* "inp/2.txt" process)
 
 (cons 'twos twos)
 (cons 'threes threes)

@@ -6,7 +6,6 @@
             #:unless (char=? c1 c2))
     1))
 
-
 (define (common s1 s2)
   (list->string
    (for/list ([c1 (in-string s1)]
@@ -16,11 +15,12 @@
 
 (define (process in)
   (define lines (sequence->list (in-lines in)))
-  (for/list ([s1 (in-list lines)]
-         #:when #t
-         [s2 (in-list lines)]
-         #:when (eq? 1 (string-diff s1 s2))
-         #:final (eq? 1 (string-diff s1 s2)))
+  (for/list
+      ([s1 (in-list lines)]
+       #:when #t
+       [s2 (in-list lines)]
+       #:when (eq? 1 (string-diff s1 s2))
+       #:final #t)
     (common s1 s2)))
 
 (define test
